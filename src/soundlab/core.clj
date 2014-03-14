@@ -1,10 +1,15 @@
 (ns soundlab.core
   (:use overtone.live))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(definst sin-wav [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4]
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (sin-osc freq)
+     vol))
+
+(definst square-wav [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4]
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (saw freq)
+     vol))
 
 (definst bar [freq 220] (* 0.8 (saw freq)))
 
@@ -24,3 +29,9 @@
 (defn song []
   (trem 220)
   (trem 440))
+
+(defn swarm []
+  (sin-wav)
+  (square-wav 67 3 1 2)
+  (square-wav 30 2 0.001 1)
+  (kick))
