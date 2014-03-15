@@ -24,7 +24,7 @@
      (saw (+ freq (* depth (sin-osc:kr rate))))))
 
 (def kick (sample (freesound-path 2086)))
-(def metro (metronome 120))
+(def metro (metronome 90))
 
 (defn looper [nome sound]
   (let [beat (nome)]
@@ -32,12 +32,23 @@
     (apply-at (nome (inc beat)) looper nome sound [])))
 
 (defn swinger [beat]
+  (at (metro beat) (sin-wav))
   (at (metro beat) (kick))
-  (at (metro (+ 1 beat)) (sin-wav))
-  (at (metro (+ 1.65 beat)) (sin-wav))
+  (at (metro (+ 1 beat)) (square-wav 30))
+  (at (metro (+ 1.65 beat)) (square-wav 50))
   (apply-at (metro (+ 2 beat)) #'swinger (+ 2 beat) []))
 
 (swinger (metro))
+
+;; filters
+(definst twang [freq 50 rand 1]
+  (pluck (* (white-noise) (env-gen (perc 0.01 10) :action FREE)) 1 3 (/ rand freq)))
+
+(defn trippy-swinger [beat rand]
+  (at (metro beat) (twang 50 rand))
+  (apply-at (metro (+ 0.17 beat)) #'trippy-swinger (+ 0.17 beat) (/ rand 1.5) []))
+
+(trippy-swinger (metro) 1)
 
 (defn song []
   (trem 220)
