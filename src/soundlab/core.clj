@@ -6,9 +6,14 @@
      (sin-osc freq)
      vol))
 
-(definst square-wav [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4]
+(definst saw-wav [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4]
   (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
      (saw freq)
+     vol))
+
+(definst square-wav [freq 440 attack 0.01 sustain 0.4 release 0.1 vol 0.4]
+  (* (env-gen (lin attack sustain release) 1 1 0 1 FREE)
+     (lf-pulse:ar freq)
      vol))
 
 (definst bar [freq 220] (* 0.8 (saw freq)))
@@ -19,12 +24,20 @@
      (saw (+ freq (* depth (sin-osc:kr rate))))))
 
 (def kick (sample (freesound-path 2086)))
-(def one-twenty-bpm (metronome 120))
+(def metro (metronome 120))
 
 (defn looper [nome sound]
   (let [beat (nome)]
     (at (nome beat) (sound))
     (apply-at (nome (inc beat)) looper nome sound [])))
+
+(defn swinger [beat]
+  (at (metro beat) (kick))
+  (at (metro (+ 1 beat)) (sin-wav))
+  (at (metro (+ 1.65 beat)) (sin-wav))
+  (apply-at (metro (+ 2 beat)) #'swinger (+ 2 beat) []))
+
+(swinger (metro))
 
 (defn song []
   (trem 220)
@@ -32,6 +45,6 @@
 
 (defn swarm []
   (sin-wav)
-  (square-wav 67 3 1 2)
-  (square-wav 30 2 0.001 1)
   (kick))
+
+(swarm)
