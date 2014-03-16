@@ -18,12 +18,15 @@
      vol))
 
 ;; Droplet with ADSR and multiple envelopes on different controls
-(definst droplet [freq 440 attack 0.01 decay 1 sustain 0.4 release 0.1 vol 0.4]
-  (* (env-gen (adsr attack decay sustain release) 1 1 0 1 FREE)
-     (lpf (sin-osc (* freq (env-gen (adsr 0.391 0 0 0)))) 150)
-     (* vol (env-gen (adsr attack decay sustain release)))))
+(definst droplet [freq 440 vol 0.4]
+  (* (env-gen (adsr 0.099 0.1 0 0) 1 1 0 1 FREE)
+     (lpf (sin-osc (* freq (env-gen (adsr 0.23 0 0 0)))) 400)
+     vol))
 
-(droplet 400 0.05 0.4 0 0 50)
+(droplet 750 0.4)
+
+
+
 
 (definst c-hat [amp 0.8 t 0.04]
   (let [env (env-gen (perc 0.001 t) 1 1 0 1 FREE)
@@ -65,7 +68,7 @@
   (at (metro (+ 1.6 beat)) (c-hat))
   (at (metro (+ 2 beat)) (c-hat))
   (at (metro (+ 2.7 beat)) (c-hat))
-  (at (metro (+ 2.9 beat)) (droplet 400 0.05 0.4 0 0 50))
+  (at (metro (+ 2.9 beat)) (droplet 750 0.4 400))
   ; (at (metro (+ 2.9 beat)) (saw-wav 500 0.1 0 0.4 50))
   ; (at (metro (+ 2.9 beat)) (trippy-swinger (metro) 1))
   (apply-at (metro (+ 4 beat)) #'beat2 (+ 4 beat) []))
