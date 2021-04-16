@@ -35,7 +35,7 @@
      (line:kr 0 1 length FREE)
      (saw (+ freq (* depth (sin-osc:kr rate))))))
 
-(def kick (sample (freesound-path 2086)))
+;; (def kick (sample (freesound-path 2086)))
 (def metro (metronome 97))
 
 (defn looper [nome sound]
@@ -45,7 +45,7 @@
 
 (defn beat1 [beat]
   (at (metro beat) (sin-wav))
-  (at (metro beat) (kick))
+  ;; (at (metro beat) (kick))
   (at (metro (+ 1 beat)) (square-wav 30))
   (at (metro (+ 1.65 beat)) (square-wav 50))
   (apply-at (metro (+ 2 beat)) #'beat1 (+ 2 beat) []))
@@ -78,7 +78,8 @@
 
 (defn swarm []
   (sin-wav)
-  (kick))
+  ;; (kick)
+  )
 
 (defn composition []
   (beat1 (metro))
