@@ -50,3 +50,8 @@ In a REPL:
 > (use 'soundlab.core)
 > (composition)
 ```
+
+To stop sound:
+```
+(stop)
+```

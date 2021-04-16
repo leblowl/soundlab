@@ -36,33 +36,6 @@
      (saw (+ freq (* depth (sin-osc:kr rate))))))
 
 ;; (def kick (sample (freesound-path 2086)))
-(def metro (metronome 97))
-
-(defn looper [nome sound]
-  (let [beat (nome)]
-    (at (nome beat) (sound))
-    (apply-at (nome (inc beat)) looper nome sound [])))
-
-(defn beat1 [beat]
-  (at (metro beat) (sin-wav))
-  ;; (at (metro beat) (kick))
-  (at (metro (+ 1 beat)) (square-wav 30))
-  (at (metro (+ 1.65 beat)) (square-wav 50))
-  (apply-at (metro (+ 2 beat)) #'beat1 (+ 2 beat) []))
-
-(defn beat2 [beat]
-  (at (metro beat) (c-hat))
-  (at (metro (+ 0.1 beat)) (c-hat))
-  (at (metro (+ 0.5 beat)) (c-hat))
-  (at (metro (+ 0.6 beat)) (c-hat))
-  (at (metro (+ 1.5 beat)) (c-hat))
-  (at (metro (+ 1.6 beat)) (c-hat))
-  (at (metro (+ 2 beat)) (c-hat))
-  (at (metro (+ 2.7 beat)) (c-hat))
-  (at (metro (+ 2.9 beat)) (droplet 750))
-  ; (at (metro (+ 2.9 beat)) (saw-wav 500 0.1 0 0.4 50))
-  ; (at (metro (+ 2.9 beat)) (trippy-swinger (metro) 1))
-  (apply-at (metro (+ 4 beat)) #'beat2 (+ 4 beat) []))
 
 (definst twang [freq 50 delay 1]
   (pluck (* (white-noise) (env-gen (perc 0.01 10) :action FREE)) 1 1 (/ delay freq) 1 0.5))
@@ -72,15 +45,12 @@
             (lpf (sin-osc (* freq (env-gen (adsr 0.23 0 0 0)))) 400)
             1) 1 1 (/ delay freq) 0.7 0.01))
 
-(defn trippy-swinger [beat rand]
-  (at (metro beat) (twang 50 rand))
-  (when (> rand 0.01) (apply-at (metro (+ 0.17 beat)) #'trippy-swinger (+ 0.17 beat) (/ rand 1.5) [])))
-
 (defn swarm []
   (sin-wav)
   ;; (kick)
   )
 
-(defn composition []
-  (beat1 (metro))
-  (beat2 (metro)))
+(defn looper [nome sound]
+  (let [beat (nome)]
+    (at (nome beat) (sound))
+    (apply-at (nome (inc beat)) looper nome sound [])))
