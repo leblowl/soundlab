@@ -19,24 +19,22 @@ view).
 I am not sure if this setup is consistent for every system, but this
 works for me:
 
-1. Stop pulseaudio
-
-2. Start JACK server:
+1. Suspend pulseaudio and start JACK server:
 ```
-jackd -r -d alsa -r 44100
+pasuspender -- jackd -r -d alsa -r 44100
 ```
 
-3. Start SuperCollider server:
+2. Start SuperCollider server:
 ```
 export SC_JACK_DEFAULT_INPUTS="system:capture_1,system:capture_2"
 export SC_JACK_DEFAULT_OUTPUTS="system:playback_1,system:playback_2"
-scsynth -u 57110 -i 2 -o 2
+scsynth -u 57110 -i 2 -o 2 -m 128000
 ```
 This post (https://swiki.hfbk-hamburg.de/MusicTechnology/634) helped
 me figure out how to configure JACK input/outputs automatically
 (SC_JACK_DEFAULT_[INPUTS|OUTPUTS]).
 
-4. Start REPL and test sound:
+3. Start REPL and test sound:
 ```
 lein repl
 > (use overtone.core)

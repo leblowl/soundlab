@@ -7,7 +7,7 @@
 (defn beat-sqr [beat]
   (at (metro (+ 1 beat)) (square-wav 30 0.05 1))
   (at (metro (+ 1 beat)) (square-wav 1 1 1 0.1 1))
-  (apply-at (metro (+ 2 beat)) #'beat1 (+ 2 beat) []))
+  (apply-at (metro (+ 2 beat)) #'beat-sqr (+ 2 beat) []))
 
 (defn beat-hat [beat]
   (at (metro beat)         (c-hat))
@@ -18,7 +18,7 @@
   (at (metro (+ 1.6 beat)) (c-hat))
   (at (metro (+ 2 beat))   (c-hat))
   (at (metro (+ 2.7 beat)) (c-hat))
-  (apply-at (metro (+ 4 beat)) #'beat2 (+ 4 beat) []))
+  (apply-at (metro (+ 4 beat)) #'beat-hat (+ 4 beat) []))
 
 (defn beat-drop [beat]
   (at (metro (+ 2.4 beat)) (droplet 100 1))
