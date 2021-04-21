@@ -42,5 +42,4 @@
 (defn play []
   (beat-sqr (metro))
   (beat-hat (metro))
-  (beat-drop (metro))
-  )
+  (beat-drop (metro)))

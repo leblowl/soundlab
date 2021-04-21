@@ -61,13 +61,14 @@
 
 ;; Composition
 
-(->>
- hat
- (m/then (m/with hat bass drones))
- (m/then (m/with hat bass melody drones))
- (m/then (m/with hat bass drones))
- (m/then (m/with hat bass melody drones))
- (m/wherever :pitch, :pitch (comp s/lower))
- (m/wherever :pitch, :pitch (comp s/C s/major))
- (m/tempo (m/bpm 130))
- l/play)
+(defn play []
+  (->>
+   hat
+   (m/then (m/with hat bass drones))
+   (m/then (m/with hat bass melody drones))
+   (m/then (m/with hat bass drones))
+   (m/then (m/with hat bass melody drones))
+   (m/wherever :pitch, :pitch (comp s/lower))
+   (m/wherever :pitch, :pitch (comp s/C s/major))
+   (m/tempo (m/bpm 130))
+   l/play))

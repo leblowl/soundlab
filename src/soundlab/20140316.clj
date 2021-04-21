@@ -10,7 +10,6 @@
 
 (defn beat1 [beat]
   (at (metro beat) (sin-wav))
-  ;; (at (metro beat) (kick))
   (at (metro (+ 1 beat)) (square-wav 30))
   (at (metro (+ 1.65 beat)) (square-wav 50))
   (apply-at (metro (+ 2 beat)) #'beat1 (+ 2 beat) []))
@@ -25,8 +24,7 @@
   (at (metro (+ 2 beat)) (c-hat))
   (at (metro (+ 2.7 beat)) (c-hat))
   (at (metro (+ 2.9 beat)) (droplet 750))
-  ; (at (metro (+ 2.9 beat)) (saw-wav 500 0.1 0 0.4 50))
-  ; (at (metro (+ 2.9 beat)) (trippy-swinger (metro) 1))
+  (at (metro (+ 2.9 beat)) (trippy-swinger (metro) 1))
   (apply-at (metro (+ 4 beat)) #'beat2 (+ 4 beat) []))
 
 (defn play []
